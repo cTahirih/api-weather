@@ -1,3 +1,11 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.title {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .box-info {
   border: 1px solid blue;
 }
