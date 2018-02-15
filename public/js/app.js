@@ -1,7 +1,7 @@
 $(document).ready(function(params) {
   const btnPredic = $('#btn-prediction');
   const boxPrediction = $('#weather-box');
-  const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', ' Dominngo'];
+  const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', ' Domingo'];
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -35,67 +35,56 @@ $(document).ready(function(params) {
 
     let cut = rspCity.indexOf('/');
     let city = rspCity.substr(cut + 1);
-    //
-    // const newsRsult = `
-    // <div class = "mt-2 mb-2 pt-2 pb-2 pl-2 pr-2">
-    //   <div class = "col-1">
-    //     <img class="img-fluid rounded" src="../assets/images/${element.icon}.png">
-    //   </div>
-    //   <div class = "row">
-    //     <div class = "col-6">
-    //       <p class="text-justify">${element.temperatureMax}</p>
-    //     </div>
-    //     <div class = "col-6">
-    //       <p class="text-justify">${element.temperatureMin}</p>
-    //     </div>
-    //   </div>
-    // </div>
-    // `;
-    // boxInfoPrediction.append(newsRsult);
 
-    let getTmp = $('<h1/>', {
-      'class': 'tmp'
-    }).text(rspToday.temperature + '°' + '-' + city);
-    $('#tmp').append(getTmp);
-    let getSensationTmp = $('<p/>', {
-      'class': 'tmp'
-    }).text('Sensación Térmica: ' + rspToday.apparentTemperature);
-    boxInfoPrediction.append(getSensationTmp);
-    let getHumidity = $('<p/>', {
-      'class': 'tmp'
-    }).text('Humedad: ' + rspToday.humidity);
-    boxInfoPrediction.append(getHumidity);
-
-    let getWindSpeed = $('<p/>', {
-      'class': 'tmp'
-    }).text('Viento: a ' + rspToday.windSpeed + ' m/s');
-    boxInfoPrediction.append(getWindSpeed);
-    imgWeather.attr('src', `assets/images/${getIcon}.png`);
-
-    week = rspWeek.slice(0, 7);
-    week.forEach((element, index) => {
-      console.log(element);
-      const newsRsult = `
-      <div class = "row">
-        <div class="col-2">
-          <p>${days[index]}</p>
-        </div>
-        <div class = "col-2">
-          <img class="img-fluid" src="assets/images/${element.icon}.png">
-        </div>
-        <div class = "col-4">
-          <p class="text-justify">Temperatura Max.<span>${element.temperatureMax}</span></p>
-        </div>
-        <div class = "col-4">
-          <p class="text-justify">Temperatura Min.<span>${element.temperatureMin}</span></p>
-        </div>
-        </div>
+    const predictionDay = `
+    <div class = "row">
+      <div class="col-12 d-flex justify-content-center">
+        <img class="d-block" src="assets/images/${getIcon}.png">
       </div>
-      `;
-      $('.box-week').append(newsRsult);
+    </div>
+    <div class="row">
+      <div class="col-8 offset-2 text-center title">
+        <h2>${rspToday.temperature}°-${city}</h2>
+      </div>
+      <div class="text-left col-8 offset-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 box-1">
+        <p>Sensación Térmica: <span>${rspToday.apparentTemperature}</span></p>
+        <p>Humedad: <span>${rspToday.humidity}</span></p>
+        <p>Viento: <span>a ${rspToday.windSpeed} m/s</span></p>
+      </div>
+      <div class="col-12 d-flex justify-content-center mt-3 mb-3">
+        <input class="btn btn-green" type="button" value="Ver más" id="btn-more">
+      </div>
+    </div>
+    `;
+    boxInfoPrediction.append(predictionDay);
+
+    $('#btn-more').one('click', function() {
+      week = rspWeek.slice(0, 7);
+      week.forEach((element, index) => {
+        console.log(element);
+        const newsRsult = `
+          <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+            <div class = "row">
+                <div class="col-2">
+                  <p>${days[index]}</p>
+                </div>
+                <div class = "col-2">
+                  <img class="img-fluid" src="assets/images/${element.icon}.png">
+                </div>
+                <div class = "col-4">
+                  <p class="">Max.<span>${element.temperatureMax}°</span></p>
+                </div>
+                <div class = "col-4">
+                  <p class="">Min.<span>${element.temperatureMin}°</span></p>
+                </div>
+            </div>
+          </div>
+        `;
+        $('.box-week').append(newsRsult);
+      });
     });
   }
 
 
-  btnPredic.on('click', getLocation);
+  btnPredic.one('click', getLocation);
 });

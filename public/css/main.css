@@ -6,6 +6,23 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.box-info {
-  border: 1px solid blue;
+.span {
+  display: block;
+}
+
+.box-1 {
+  border: 2px solid #b7d84b;
+  padding-top: 1rem;
+  border-radius: 10px;
+}
+
+header {
+  background-color: #a0cdf8;
+  color: #fff;
+}
+
+.btn-green {
+  background-color: #a0cdf8;
+  color: #fff;
+  font-weight: bold;
 }
