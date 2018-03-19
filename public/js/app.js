@@ -1,12 +1,10 @@
 $(document).ready(function(params) {
-  /* declarando variables de alcance  global mediante la palabra reservada const con jquery*/
-  const btnPredic = $('#btn-prediction'); // por medio del selector tipo id hacemos el llamado al boton de prediccion
-  const boxPrediction = $('#weather-box'); // caja  donde apareceran las predicciones de tiempo por cada dia
-  const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', ' Domingo'];// arreglo de variables tipo string
+ 
+  const btnPredic = $('#btn-prediction'); 
+  const boxPrediction = $('#weather-box'); 
+  const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', ' Domingo', 'Lunes'];
 
-  // funcion statement que sirve para obtener mi localizacion
   function getLocation() {
-    // condicional verificando si el navegador tiene la propiedad geolocation
     if (navigator.geolocation) {
       // obteniendo la posicion en la que actualmente me encuentro. Utilizando el getCurrentPosition que tiene  como parametro a una funcion
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -45,13 +43,9 @@ $(document).ready(function(params) {
     let boxInfoPrediction = $('.info-time');
     // recorriendo el object por medio de sus propiedades
     let rspToday = data.currently; // datos actuales
-    let rspCity = data.timezone; // El lugar(zona horaria que sera el continente y la ciudad)
     let rspWeek = data.daily.data;
     let getIcon = rspToday.icon;
-
-    // El rspCity contiene un string con el continente y la ciudad, asi que solo queremos la ciudad
-    let cut = rspCity.indexOf('/'); // obteniendo el indice donde encuentre a :  '/'
-    let city = rspCity.substr(cut + 1); // restamos la parte del string (continente) que no deseamos y nos quedamos con el string que se necesita(ciudad)
+    let summary = rspToday.summary;
 
     // incluyendo html desde js, insertandole los datos obtenidos de las correspodiente API mediante la concatenacion de comillas invertidas
     const predictionDay = `
@@ -62,7 +56,7 @@ $(document).ready(function(params) {
     </div>
     <div class="row">
       <div class="col-8 offset-2 text-center title">
-        <h2>${rspToday.temperature}°-${city}</h2>
+        <h2>${rspToday.temperature}°-${summary}</h2>
       </div>
       <div class="text-left col-8 offset-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 box-1">
         <p>Sensación Térmica: <span>${rspToday.apparentTemperature}</span></p>
@@ -79,10 +73,8 @@ $(document).ready(function(params) {
 
     // al hacer el evento click en el boton(llamada por selector tipo id btn-more) solo se permitira una vez por ello ponemos el .one
     $('#btn-more').one('click', function() {
-      // obteniendo otro arreglo solo con los dias de la semana correspondientes
-      week = rspWeek.slice(0, 7);
       // haciendo iteraccion dia a dia de los elementos del array para insertar el contenido de los iconos y la temperatura maxima o minima
-      week.forEach((element, index) => {
+      rspWeek.forEach((element, index) => {
         console.log(element);
         const newsRsult = `
           <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
@@ -102,7 +94,6 @@ $(document).ready(function(params) {
             </div>
           </div>
         `;
-        // Todo el resultado anterior lo insertaremos en la caja de semana
         $('.box-week').append(newsRsult);
       });
     });
